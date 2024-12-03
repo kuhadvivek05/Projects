@@ -1,0 +1,54 @@
+def flutterRoot = rootProject.getRootDir().toPath().resolve('flutter').toString()
+
+def flutterPropertiesFile = new File(flutterRoot, 'packages/flutter_tools/gradle/flutter.gradle')
+if (flutterPropertiesFile.exists()) {
+    apply from: flutterPropertiesFile
+} else {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+android {
+    compileSdkVersion 31 // Update to the latest compileSdkVersion
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    defaultConfig {
+        applicationId "com.example.food_delivery"
+        minSdkVersion 17
+        targetSdkVersion 31 // Update to the latest targetSdkVersion
+        multiDexEnabled true
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" // Updated instrumentation runner
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            // signingConfig signingConfigs.debug (This line is commented out because it's using debug signing configuration)
+        }
+    }
+}
+
+flutter {
+    source '../..' // Adjusted Flutter source path
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // Adjusted Kotlin dependency
+    testImplementation 'junit:junit:4.13.2' // Updated JUnit version
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3' // Updated AndroidX test dependencies
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0' // Updated Espresso version
+    implementation 'com.google.firebase:firebase-analytics:19.0.0' // Updated Firebase dependencies
+    implementation 'com.google.firebase:firebase-auth:21.0.1' // Updated Firebase dependencies
+    implementation 'com.google.firebase:firebase-firestore:23.0.0' // Updated Firebase dependencies
+}
+
+apply plugin: 'com.google.gms.google-services'
